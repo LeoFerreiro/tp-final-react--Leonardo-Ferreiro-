@@ -66,3 +66,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Contenedor principal centrado */
+.main-container {
+  max-width: 1200px;   /* ancho máximo en desktop */
+  margin: 0 auto;      /* centrado horizontal */
+  padding: 1rem 2rem;  /* padding para mobile y tablet */
+  box-sizing: border-box;
+}
+
+/* Opcional: ajustar los títulos y secciones */
+.main-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.main-container section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

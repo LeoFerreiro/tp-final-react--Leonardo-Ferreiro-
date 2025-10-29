@@ -8,11 +8,13 @@ function App() {
   return (
     <>
       <Navbar />
+      <div className="main-container">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokemons" element={<PokemonList />} />
         <Route path="/pokemon/:id" element={<PokemonDetail />} />
       </Routes>
+      </div>
     </>
   );
 }

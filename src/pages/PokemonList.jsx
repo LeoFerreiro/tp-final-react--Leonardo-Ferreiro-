@@ -21,14 +21,14 @@ function PokemonList() {
   return (
     <div className="pokemon-list">
       {pokemons.map((p, index) => (
-        <Link to={`/pokemon/${p.name}`} key={index} className="pokemon-card">
-          <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
-            alt={p.name}
-          />
-          <h3>{p.name.toUpperCase()}</h3>
-        </Link>
-      ))}
+        <Link to={`/pokemon/${p.name}`} key={p.name} className="pokemon-card">
+  <img
+    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+    alt={p.name}
+    />
+    <h3>{p.name.toUpperCase()}</h3>
+    </Link>
+  ))}
     </div>
   );
 }
