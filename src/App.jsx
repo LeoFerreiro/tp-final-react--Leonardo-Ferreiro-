@@ -1,22 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import PokemonList from "./pages/PokemonList";
-import PokemonDetail from "./pages/PokemonDetail";
-import "./styles/global.css";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import Home from "./pages/Home.jsx";
+import PokemonList from "./pages/PokemonList.jsx";
+import PokemonDetail from "./pages/PokemonDetail.jsx";
 
 function App() {
   return (
-    <Router>
+    <>
       <Navbar />
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/pokemons" element={<PokemonList />} />
-          <Route path="/pokemon/:name" element={<PokemonDetail />} />
-        </Routes>
-      </div>
-    </Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/pokemons" element={<PokemonList />} />
+        <Route path="/pokemon/:id" element={<PokemonDetail />} />
+      </Routes>
+    </>
   );
 }
 
