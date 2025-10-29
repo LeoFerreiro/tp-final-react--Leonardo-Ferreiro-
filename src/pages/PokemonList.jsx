@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./PokemonList.css";
+import "../styles/list.css";
 
 function PokemonList() {
   const [pokemons, setPokemons] = useState([]);
