@@ -8,8 +8,8 @@ function Home() {
         alt="PokéAPI"
         className="home-logo"
       />
-      <h2>Bienvenido a la PokéApp</h2>
-      <p>Explorá tus pokémons favoritos con un diseño moderno y fluido.</p>
+      <h2>Bienvenido a la App de Pockemon</h2>
+      <p>Explorá los pokemons y selecciona tus favoritos!!</p>
     </section>
   );
 }
