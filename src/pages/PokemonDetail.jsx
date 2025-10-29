@@ -1,49 +1,36 @@
-import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "../styles/detail.css";
 
-function PokemonDetail() {
+export default function PokemonDetail() {
   const { id } = useParams();
-  const [pokemon, setPokemon] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const selected = useSelector((state) => state.pokemon.selected);
+  const [pokemon, setPokemon] = useState(selected);
+  const [loading, setLoading] = useState(!selected);
 
   useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPokemon(data);
-        setLoading(false);
-      })
-      .catch((err) => console.error("Error cargando detalle", err));
-  }, [id]);
+    if (!selected) {
+      fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPokemon(data);
+          setLoading(false);
+        });
+    }
+  }, [id, selected]);
 
-  if (loading) return <p>Cargando detalle...</p>;
+  if (loading) return <p>Cargando Pokémon...</p>;
   if (!pokemon) return <p>No se encontró el Pokémon.</p>;
 
   return (
     <div className="pokemon-detail">
       <h1>{pokemon.name.toUpperCase()}</h1>
-      <img
-        src={pokemon.sprites.other["official-artwork"].front_default}
-        alt={pokemon.name}
-      />
-
-      <div className="pokemon-info">
-        <p><strong>Altura:</strong> {pokemon.height / 10} m</p>
-        <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
-        <p>
-          <strong>Tipo:</strong>{" "}
-          {pokemon.types.map((t) => t.type.name).join(", ")}
-        </p>
-        <p>
-          <strong>Habilidades:</strong>{" "}
-          {pokemon.abilities.map((a) => a.ability.name).join(", ")}
-        </p>
-      </div>
-
-      <Link to="/pokemons" className="back-btn">← Volver al listado</Link>
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <p><strong>Altura:</strong> {pokemon.height / 10} m</p>
+      <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
+      <p><strong>Tipo:</strong> {pokemon.types.map(t => t.type.name).join(", ")}</p>
+      <p><strong>Habilidades:</strong> {pokemon.abilities.map(a => a.ability.name).join(", ")}</p>
+      <Link to="/pokemons">← Volver al listado</Link>
     </div>
   );
 }
-
-export default PokemonDetail;
