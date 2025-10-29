@@ -22,16 +22,13 @@ h1, h2, h3 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .pokemon-detail img {
     width: 150px;
   }
   .pokemon-info {
     font-size: 1rem;
   }
-}
-
-@media (max-width: 768px) {
   .main-container {
     padding: 1rem;
   }
