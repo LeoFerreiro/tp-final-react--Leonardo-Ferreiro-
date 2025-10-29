@@ -23,9 +23,8 @@ export default function PokemonList() {
           onClick={() => dispatch(fetchPokemonDetail(p.name))}
           className="pokemon-card"
         >
-          {/* Imagen usando índice + 1 */}
           <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index + 1}.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
             alt={p.name}
           />
           <h3>{p.name.toUpperCase()}</h3>
