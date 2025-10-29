@@ -13,8 +13,8 @@ export default function PokemonDetail() {
     if (!pokemon || pokemon.name !== id) {
       dispatch(fetchPokemonDetail(id));
     }
-    return () => dispatch(clearSelectedPokemon()); // limpia al salir del detalle
-  }, [id, dispatch]);
+    return () => dispatch(clearSelectedPokemon());
+  }, [id, pokemon, dispatch]);
 
   if (loading || !pokemon) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
 
@@ -22,7 +22,7 @@ export default function PokemonDetail() {
     <div className="pokemon-detail">
       <h1>{pokemon.name.toUpperCase()}</h1>
       <img
-        src={pokemon.sprites.other["official-artwork"].front_default || pokemon.sprites.front_default}
+        src={pokemon.sprites?.other?.["official-artwork"]?.front_default || pokemon.sprites?.front_default}
         alt={pokemon.name}
       />
       <div className="pokemon-info">
