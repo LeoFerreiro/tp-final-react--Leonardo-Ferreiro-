@@ -1,28 +1,22 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { fetchPokemonDetail, clearSelectedPokemon } from "../store/pokemonSlice";
 import "../styles/detail.css";
 
 export default function PokemonDetail() {
   const { id } = useParams();
-  const selected = useSelector((state) => state.pokemon.selected);
-  const [pokemon, setPokemon] = useState(selected);
-  const [loading, setLoading] = useState(!selected);
+  const dispatch = useDispatch();
+  const { selected: pokemon, loading } = useSelector((state) => state.pokemon);
 
   useEffect(() => {
-    if (!selected) {
-      fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPokemon(data);
-          setLoading(false);
-        })
-        .catch((err) => console.error("Error detalle Pokémon:", err));
+    if (!pokemon || pokemon.name !== id) {
+      dispatch(fetchPokemonDetail(id));
     }
-  }, [id, selected]);
+    return () => dispatch(clearSelectedPokemon()); // limpia al salir del detalle
+  }, [id, dispatch]);
 
-  if (loading) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
-  if (!pokemon) return <p style={{ textAlign: "center", marginTop: "2rem" }}>No se encontró el Pokémon.</p>;
+  if (loading || !pokemon) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
 
   return (
     <div className="pokemon-detail">

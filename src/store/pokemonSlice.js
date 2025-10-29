@@ -1,12 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-// Acción asincrónica para cargar la lista de Pokémon
-export const fetchPokemons = createAsyncThunk(
-  "pokemon/fetchPokemons",
-  async () => {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
+export const fetchPokemonDetail = createAsyncThunk(
+  "pokemon/fetchPokemonDetail",
+  async (id) => {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await res.json();
-    return data.results;
+    return data;
   }
 );
 
@@ -22,6 +19,9 @@ const pokemonSlice = createSlice({
     setSelectedPokemon: (state, action) => {
       state.selected = action.payload;
     },
+    clearSelectedPokemon: (state) => {
+      state.selected = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -36,9 +36,20 @@ const pokemonSlice = createSlice({
       .addCase(fetchPokemons.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(fetchPokemonDetail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPokemonDetail.fulfilled, (state, action) => {
+        state.selected = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchPokemonDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export const { setSelectedPokemon } = pokemonSlice.actions;
+export const { setSelectedPokemon, clearSelectedPokemon } = pokemonSlice.actions;
 export default pokemonSlice.reducer;
