@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPokemons, fetchPokemonDetail } from "../store/pokemonSlice";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import "../styles/list.css";
 
 export default function PokemonList() {
@@ -20,11 +20,12 @@ export default function PokemonList() {
         <Link
           key={p.name}
           to={`/pokemon/${p.name}`}
-          onClick={() => dispatch(fetchPokemonDetail(p.name))} // <--- fetch del detalle
+          onClick={() => dispatch(fetchPokemonDetail(p.name))}
           className="pokemon-card"
         >
+          {/* Imagen usando índice + 1 */}
           <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index + 1}.png`}
             alt={p.name}
           />
           <h3>{p.name.toUpperCase()}</h3>

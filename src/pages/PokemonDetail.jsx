@@ -18,13 +18,16 @@ export default function PokemonDetail() {
 
   if (loading || !pokemon) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
 
+  // Imagen con fallback: artwork oficial > front_default > placeholder
+  const imageUrl =
+    pokemon.sprites?.other?.["official-artwork"]?.front_default ||
+    pokemon.sprites?.front_default ||
+    "https://via.placeholder.com/200x200?text=Sin+imagen";
+
   return (
     <div className="pokemon-detail">
       <h1>{pokemon.name.toUpperCase()}</h1>
-      <img
-        src={pokemon.sprites?.other?.["official-artwork"]?.front_default || pokemon.sprites?.front_default}
-        alt={pokemon.name}
-      />
+      <img src={imageUrl} alt={pokemon.name} />
       <div className="pokemon-info">
         <p><strong>Altura:</strong> {pokemon.height / 10} m</p>
         <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
