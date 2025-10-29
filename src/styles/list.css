@@ -3,6 +3,8 @@
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto; /* centrado */
 }
 
 .pokemon-card {

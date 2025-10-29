@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPokemons, setSelectedPokemon } from "../store/pokemonSlice";
 import { Link } from "react-router-dom";
+import "../styles/list.css";
 
 export default function PokemonList() {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ export default function PokemonList() {
     dispatch(fetchPokemons());
   }, [dispatch]);
 
-  if (loading) return <p>Cargando Pokémon...</p>;
+  if (loading) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
 
   return (
     <div className="pokemon-list">

@@ -1,11 +1,14 @@
 .pokemon-detail {
   text-align: center;
   padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto; /* centrado desktop */
 }
 
 .pokemon-detail img {
   width: 200px;
   height: 200px;
+  margin-bottom: 1rem;
 }
 
 .pokemon-info {
@@ -21,8 +24,20 @@
   padding: 0.7rem 1.5rem;
   border-radius: 8px;
   text-decoration: none;
+  transition: background 0.3s;
 }
 
 .back-btn:hover {
   background: #4b50e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pokemon-detail img {
+    width: 150px;
+    height: 150px;
+  }
+  .pokemon-info {
+    font-size: 1rem;
+  }
 }
