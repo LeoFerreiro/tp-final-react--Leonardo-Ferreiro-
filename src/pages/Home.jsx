@@ -18,8 +18,8 @@ export default function Home() {
           {favorites.map((p, index) => (
             <Link key={p.name} to={`/pokemon/${p.name}`} className="fav-card">
               <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
-                alt={p.name}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.name}.png`}
+              alt={p.name}
               />
               <p>{p.name.toUpperCase()}</p>
             </Link>

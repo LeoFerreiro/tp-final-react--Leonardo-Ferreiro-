@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// --- Asynchronous fetchers ---
+// --- Async Thunks ---
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
   async () => {
@@ -19,12 +19,27 @@ export const fetchPokemonDetail = createAsyncThunk(
   }
 );
 
+// --- Helpers ---
+const loadFavorites = () => {
+  try {
+    const saved = localStorage.getItem("favorites");
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveFavorites = (favorites) => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
+
+// --- Slice ---
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState: {
     list: [],
     selected: null,
-    favorites: [], // 🆕 nuevo estado
+    favorites: loadFavorites(), // 🧠 carga desde localStorage
     loading: false,
     error: null,
   },
@@ -33,7 +48,6 @@ const pokemonSlice = createSlice({
       state.selected = null;
     },
 
-    // 🆕 Agregar o quitar de favoritos
     toggleFavorite: (state, action) => {
       const name = action.payload;
       const exists = state.favorites.find((p) => p.name === name);
@@ -43,17 +57,14 @@ const pokemonSlice = createSlice({
       } else {
         const fromList = state.list.find((p) => p.name === name);
         if (fromList) {
-          // Si viene del listado
-          state.favorites.push({ ...fromList });
+          state.favorites.push({ name: fromList.name });
         } else if (state.selected && state.selected.name === name) {
-          // Si viene del detalle
-          state.favorites.push({
-            name: state.selected.name,
-            id: state.selected.id,
-            sprites: state.selected.sprites,
-          });
+          state.favorites.push({ name: state.selected.name });
         }
       }
+
+      // 🧠 Guarda automáticamente en localStorage
+      saveFavorites(state.favorites);
     },
   },
   extraReducers: (builder) => {
