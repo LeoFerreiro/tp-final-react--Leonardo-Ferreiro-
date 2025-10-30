@@ -1,17 +1,31 @@
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import "../styles/home.css";
 
-function Home() {
+export default function Home() {
+  const { favorites } = useSelector((state) => state.pokemon);
+
   return (
-    <section className="home fade-in">
-      <img
-        src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
-        alt="PokéAPI"
-        className="home-logo"
-      />
-      <h2>Bienvenido a la App de Pockemon</h2>
-      <p>Explorá los pokemons y selecciona tus favoritos!!</p>
-    </section>
+    <div className="home">
+      <h1>Bienvenido al Pokédex</h1>
+      <p>Seleccioná tus Pokémon favoritos 💫</p>
+
+      <h2>⭐ Tus Pokémon Favoritos</h2>
+      {favorites.length === 0 ? (
+        <p>No tenés favoritos todavía.</p>
+      ) : (
+        <div className="favorites-list">
+          {favorites.map((p, index) => (
+            <Link key={p.name} to={`/pokemon/${p.name}`} className="fav-card">
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+                alt={p.name}
+              />
+              <p>{p.name.toUpperCase()}</p>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
-
-export default Home;

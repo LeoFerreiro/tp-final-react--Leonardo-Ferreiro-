@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// 👉 Trae listado de Pokémons
+// --- Asynchronous fetchers ---
 export const fetchPokemons = createAsyncThunk(
   "pokemon/fetchPokemons",
   async () => {
@@ -10,7 +10,6 @@ export const fetchPokemons = createAsyncThunk(
   }
 );
 
-// 👉 Trae detalle de un Pokémon por nombre o ID
 export const fetchPokemonDetail = createAsyncThunk(
   "pokemon/fetchPokemonDetail",
   async (name) => {
@@ -25,6 +24,7 @@ const pokemonSlice = createSlice({
   initialState: {
     list: [],
     selected: null,
+    favorites: [], // 🆕 nuevo estado
     loading: false,
     error: null,
   },
@@ -32,10 +32,32 @@ const pokemonSlice = createSlice({
     clearSelectedPokemon: (state) => {
       state.selected = null;
     },
+
+    // 🆕 Agregar o quitar de favoritos
+    toggleFavorite: (state, action) => {
+      const name = action.payload;
+      const exists = state.favorites.find((p) => p.name === name);
+
+      if (exists) {
+        state.favorites = state.favorites.filter((p) => p.name !== name);
+      } else {
+        const fromList = state.list.find((p) => p.name === name);
+        if (fromList) {
+          // Si viene del listado
+          state.favorites.push({ ...fromList });
+        } else if (state.selected && state.selected.name === name) {
+          // Si viene del detalle
+          state.favorites.push({
+            name: state.selected.name,
+            id: state.selected.id,
+            sprites: state.selected.sprites,
+          });
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
-      // Listado
       .addCase(fetchPokemons.pending, (state) => {
         state.loading = true;
       })
@@ -47,8 +69,6 @@ const pokemonSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-
-      // Detalle
       .addCase(fetchPokemonDetail.pending, (state) => {
         state.loading = true;
       })
@@ -63,5 +83,5 @@ const pokemonSlice = createSlice({
   },
 });
 
-export const { clearSelectedPokemon } = pokemonSlice.actions;
+export const { clearSelectedPokemon, toggleFavorite } = pokemonSlice.actions;
 export default pokemonSlice.reducer;

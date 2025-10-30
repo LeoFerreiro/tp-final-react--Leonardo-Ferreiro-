@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import {
   fetchPokemonDetail,
   clearSelectedPokemon,
+  toggleFavorite,
 } from "../store/pokemonSlice.js";
 import "../styles/detail.css";
 
 export default function PokemonDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selected: pokemon, loading, error } = useSelector(
+  const { selected: pokemon, loading, favorites } = useSelector(
     (state) => state.pokemon
   );
 
@@ -22,11 +23,17 @@ export default function PokemonDetail() {
   if (loading || !pokemon)
     return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
 
-  if (error) return <p>Error: {error}</p>;
+  const isFavorite = favorites.some((p) => p.name === pokemon.name);
 
   return (
     <div className="pokemon-detail">
       <h1>{pokemon.name.toUpperCase()}</h1>
+      <button
+        className={`fav-btn ${isFavorite ? "active" : ""}`}
+        onClick={() => dispatch(toggleFavorite(pokemon.name))}
+      >
+        ⭐ {isFavorite ? "Quitar de Favoritos" : "Agregar a Favoritos"}
+      </button>
       <img
         src={pokemon.sprites.front_default}
         alt={pokemon.name}
