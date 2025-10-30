@@ -20,6 +20,10 @@ export default function Home() {
               <img
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`}
                 alt={p.name}
+                onError={(e) => {
+                  e.target.src =
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png";
+                }}
               />
               <p>{p.name.toUpperCase()}</p>
             </Link>

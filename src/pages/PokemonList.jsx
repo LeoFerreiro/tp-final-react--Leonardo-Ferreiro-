@@ -15,7 +15,7 @@ export default function PokemonList() {
   const isFavorite = (name) => favorites.some((f) => f.name === name);
 
   const handleFavorite = (pokemon, index) => {
-    const id = index + 1; // usamos el ID numérico real
+    const id = index + 1;
     if (isFavorite(pokemon.name)) {
       dispatch(removeFavorite(pokemon.name));
     } else {
@@ -24,6 +24,7 @@ export default function PokemonList() {
   };
 
   if (loading) return <p>Cargando Pokémon...</p>;
+  if (!pokemons.length) return <p>No se pudieron cargar los Pokémon 😕</p>;
 
   return (
     <div className="list-container">

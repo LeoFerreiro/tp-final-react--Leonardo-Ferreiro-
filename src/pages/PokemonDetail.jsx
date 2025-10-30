@@ -13,10 +13,12 @@ export default function PokemonDetail() {
     dispatch(fetchPokemonByName(id));
   }, [dispatch, id]);
 
-  const isFavorite = selectedPokemon && favorites.some((f) => f.name === selectedPokemon.name);
+  if (loading) return <p>Cargando Pokémon...</p>;
+  if (!selectedPokemon) return <p>No se encontró el Pokémon 😕</p>;
+
+  const isFavorite = favorites.some((f) => f.name === selectedPokemon.name);
 
   const handleFavorite = () => {
-    if (!selectedPokemon) return;
     if (isFavorite) {
       dispatch(removeFavorite(selectedPokemon.name));
     } else {
@@ -24,13 +26,11 @@ export default function PokemonDetail() {
     }
   };
 
-  if (loading || !selectedPokemon) return <p>Cargando Pokémon...</p>;
-
   return (
     <div className="detail-container">
       <h2>{selectedPokemon.name.toUpperCase()}</h2>
       <img
-        src={selectedPokemon.sprites.front_default}
+        src={selectedPokemon.sprites?.front_default}
         alt={selectedPokemon.name}
         className="detail-img"
       />
@@ -38,11 +38,11 @@ export default function PokemonDetail() {
       <p><strong>Peso:</strong> {selectedPokemon.weight}</p>
       <p>
         <strong>Tipo:</strong>{" "}
-        {selectedPokemon.types.map((t) => t.type.name).join(", ")}
+        {selectedPokemon.types?.map((t) => t.type.name).join(", ")}
       </p>
       <p>
         <strong>Habilidades:</strong>{" "}
-        {selectedPokemon.abilities.map((a) => a.ability.name).join(", ")}
+        {selectedPokemon.abilities?.map((a) => a.ability.name).join(", ")}
       </p>
       <button className="fav-btn" onClick={handleFavorite}>
         {isFavorite ? "★ Quitar de Favoritos" : "☆ Agregar a Favoritos"}
