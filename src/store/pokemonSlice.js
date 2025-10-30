@@ -1,70 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// --- Async Thunks ---
-export const fetchPokemons = createAsyncThunk(
-  "pokemon/fetchPokemons",
-  async () => {
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
-    const data = await res.json();
-    return data.results;
-  }
-);
+// 🔹 Obtener lista de Pokémon
+export const fetchPokemons = createAsyncThunk("pokemon/fetchPokemons", async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const data = await response.json();
+  return data.results;
+});
 
-export const fetchPokemonDetail = createAsyncThunk(
-  "pokemon/fetchPokemonDetail",
-  async (name) => {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    if (!res.ok) throw new Error("Pokémon no encontrado");
-    return await res.json();
-  }
-);
+// 🔹 Obtener detalle por nombre o ID
+export const fetchPokemonByName = createAsyncThunk("pokemon/fetchPokemonByName", async (name) => {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  const data = await response.json();
+  return data;
+});
 
-// --- Helpers ---
-const loadFavorites = () => {
-  try {
-    const saved = localStorage.getItem("favorites");
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
-};
+// 🔹 Leer favoritos del localStorage al iniciar
+const initialFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-const saveFavorites = (favorites) => {
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-};
-
-// --- Slice ---
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState: {
-    list: [],
-    selected: null,
-    favorites: loadFavorites(), // 🧠 carga desde localStorage
+    pokemons: [],
+    selectedPokemon: null,
+    favorites: initialFavorites,
     loading: false,
     error: null,
   },
   reducers: {
-    clearSelectedPokemon: (state) => {
-      state.selected = null;
-    },
-
-    toggleFavorite: (state, action) => {
-      const name = action.payload;
-      const exists = state.favorites.find((p) => p.name === name);
-
-      if (exists) {
-        state.favorites = state.favorites.filter((p) => p.name !== name);
-      } else {
-        const fromList = state.list.find((p) => p.name === name);
-        if (fromList) {
-          state.favorites.push({ name: fromList.name });
-        } else if (state.selected && state.selected.name === name) {
-          state.favorites.push({ name: state.selected.name });
-        }
+    addFavorite: (state, action) => {
+      const exists = state.favorites.some((f) => f.name === action.payload.name);
+      if (!exists) {
+        state.favorites.push(action.payload);
+        localStorage.setItem("favorites", JSON.stringify(state.favorites));
       }
-
-      // 🧠 Guarda automáticamente en localStorage
-      saveFavorites(state.favorites);
+    },
+    removeFavorite: (state, action) => {
+      state.favorites = state.favorites.filter((f) => f.name !== action.payload);
+      localStorage.setItem("favorites", JSON.stringify(state.favorites));
     },
   },
   extraReducers: (builder) => {
@@ -74,25 +46,27 @@ const pokemonSlice = createSlice({
       })
       .addCase(fetchPokemons.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+        state.pokemons = action.payload;
       })
-      .addCase(fetchPokemons.rejected, (state, action) => {
+      .addCase(fetchPokemons.rejected, (state) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = "Error al cargar los Pokémon.";
       })
-      .addCase(fetchPokemonDetail.pending, (state) => {
+      .addCase(fetchPokemonByName.pending, (state) => {
         state.loading = true;
+        state.selectedPokemon = null;
       })
-      .addCase(fetchPokemonDetail.fulfilled, (state, action) => {
+      .addCase(fetchPokemonByName.fulfilled, (state, action) => {
         state.loading = false;
-        state.selected = action.payload;
+        state.selectedPokemon = action.payload;
       })
-      .addCase(fetchPokemonDetail.rejected, (state, action) => {
+      .addCase(fetchPokemonByName.rejected, (state) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = "Error al cargar el detalle.";
       });
   },
 });
 
-export const { clearSelectedPokemon, toggleFavorite } = pokemonSlice.actions;
+export const { addFavorite, removeFavorite } = pokemonSlice.actions;
+
 export default pokemonSlice.reducer;
