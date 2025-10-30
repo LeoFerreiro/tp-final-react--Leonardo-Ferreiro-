@@ -1,8 +1,19 @@
 .home {
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
 }
 
+.home h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.home p {
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+/* Favoritos */
 .favorites-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -29,4 +40,5 @@
 .fav-card img {
   width: 96px;
   height: 96px;
+  image-rendering: pixelated;
 }
