@@ -28,28 +28,26 @@ export default function PokemonList() {
 
   return (
     <div className="list-container">
-  <h2>Lista de Pokémon</h2>
-  
-  {/* Este div debe envolver TODAS las tarjetas */}
-  <div className="pokemon-grid">
-    {pokemons.map((pokemon, index) => (
-      <div key={pokemon.name} className="pokemon-card">
-        <Link to={`/pokemon/${pokemon.name}`}>
-          <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
-            alt={pokemon.name}
-          />
-        </Link>
-        <p>{pokemon.name.toUpperCase()}</p>
-        <button
-          className={`fav-btn ${favorites.some(f => f.name === pokemon.name) ? "active" : ""}`}
-          onClick={() => handleFavorite(pokemon, index)}
-        >
-          {favorites.some(f => f.name === pokemon.name) ? "★ Quitar" : "☆ Favorito"}
-        </button>
+      <h2>Lista de Pokémon</h2>
+      <div className="pokemon-grid">
+        {pokemons.map((pokemon, index) => (
+          <div key={pokemon.name} className="pokemon-card">
+            <Link to={`/pokemon/${pokemon.name}`}>
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`}
+                alt={pokemon.name}
+              />
+            </Link>
+            <p>{pokemon.name.toUpperCase()}</p>
+            <button
+              className={`fav-btn ${isFavorite(pokemon.name) ? "active" : ""}`}
+              onClick={() => handleFavorite(pokemon, index)}
+            >
+              {isFavorite(pokemon.name) ? "★ Quitar" : "☆ Favorito"}
+            </button>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-</div>
+    </div>
   );
 }
