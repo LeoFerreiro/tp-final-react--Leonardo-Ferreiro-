@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchPokemonByName, addFavorite, removeFavorite } from "../redux/pokemonSlice";
+import { fetchPokemonByName, addFavorite, removeFavorite } from "../store/pokemonSlice.js";
 import "../styles/detail.css";
 
 export default function PokemonDetail() {
