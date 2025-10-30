@@ -43,7 +43,6 @@ src/
             global.css
             home.css
             list.css
-            navbar.css
     App.css
     App.jsx
     index.css
