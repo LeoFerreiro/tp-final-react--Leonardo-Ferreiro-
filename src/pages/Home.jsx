@@ -18,11 +18,7 @@ export default function Home() {
           {favorites.map((p) => (
             <Link key={p.name} to={`/pokemon/${p.name}`} className="fav-card">
               <img
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.name}.png`}
-                onError={(e) => {
-                  e.target.src =
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"; // fallback (Pikachu)
-                }}
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`}
                 alt={p.name}
               />
               <p>{p.name.toUpperCase()}</p>
