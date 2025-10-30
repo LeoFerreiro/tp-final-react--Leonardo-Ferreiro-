@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPokemons, addFavorite, removeFavorite } from "../redux/pokemonSlice";
+import { fetchPokemons, addFavorite, removeFavorite } from "../store/pokemonSlice.js";
 import { Link } from "react-router-dom";
 import "../styles/list.css";
 
