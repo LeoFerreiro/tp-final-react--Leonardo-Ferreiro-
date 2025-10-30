@@ -1,28 +1,38 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchPokemonDetail, clearSelectedPokemon } from "../store/pokemonSlice";
+import {
+  fetchPokemonDetail,
+  clearSelectedPokemon,
+} from "../store/pokemonSlice.js";
 import "../styles/detail.css";
 
 export default function PokemonDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selected: pokemon, loading } = useSelector((state) => state.pokemon);
+  const { selected: pokemon, loading, error } = useSelector(
+    (state) => state.pokemon
+  );
 
   useEffect(() => {
-    if (!pokemon || pokemon.name !== id) {
-      dispatch(fetchPokemonDetail(id));
-    }
+    dispatch(fetchPokemonDetail(id));
     return () => dispatch(clearSelectedPokemon());
-  }, [id, pokemon, dispatch]);
+  }, [dispatch, id]);
 
-  if (loading || !pokemon) return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
+  if (loading || !pokemon)
+    return <p style={{ textAlign: "center", marginTop: "2rem" }}>Cargando Pokémon...</p>;
+
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="pokemon-detail">
       <h1>{pokemon.name.toUpperCase()}</h1>
-      {/* Usamos front_default que siempre existe */}
-      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <img
+        src={pokemon.sprites.front_default}
+        alt={pokemon.name}
+        width="200"
+        height="200"
+      />
       <div className="pokemon-info">
         <p><strong>Altura:</strong> {pokemon.height / 10} m</p>
         <p><strong>Peso:</strong> {pokemon.weight / 10} kg</p>
