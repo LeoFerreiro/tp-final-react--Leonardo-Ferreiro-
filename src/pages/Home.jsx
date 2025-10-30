@@ -15,11 +15,15 @@ export default function Home() {
         <p>No tenés favoritos todavía.</p>
       ) : (
         <div className="favorites-list">
-          {favorites.map((p, index) => (
+          {favorites.map((p) => (
             <Link key={p.name} to={`/pokemon/${p.name}`} className="fav-card">
               <img
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.name}.png`}
-              alt={p.name}
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.name}.png`}
+                onError={(e) => {
+                  e.target.src =
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"; // fallback (Pikachu)
+                }}
+                alt={p.name}
               />
               <p>{p.name.toUpperCase()}</p>
             </Link>
