@@ -27,8 +27,8 @@ export default function PokemonList() {
   if (!pokemons.length) return <p>No se pudieron cargar los Pokémon 😕</p>;
 
   return (
-    //<div className="list-container">
-      //<h2>Lista de Pokémon</h2>
+    <div className="list-container">
+      <h2>Lista de Pokémon</h2>
       <div className="pokemon-grid">
         {pokemons.map((pokemon, index) => (
           <div key={pokemon.name} className="pokemon-card">
@@ -48,6 +48,6 @@ export default function PokemonList() {
           </div>
         ))}
       </div>
-    //</div>
+    </div>
   );
 }
